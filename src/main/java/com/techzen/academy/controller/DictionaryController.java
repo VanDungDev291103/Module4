@@ -15,11 +15,11 @@ public class DictionaryController {
 
     private Map<String, String> dictionaryMap = Map.ofEntries(
             // hoặc có thể sài hashMap nếu dữ liệu thay thổi thay vì Map.ofEntries thì dữ liệu sẽ không thay đổi
-            Map.entry("morning","Chào buổi sáng"),
-            Map.entry("what","cái gì"),
-            Map.entry("apple","quả táo"),
-            Map.entry("phone","điện thoại"),
-            Map.entry("book","sách")
+            Map.entry("morning", "Chào buổi sáng"),
+            Map.entry("what", "cái gì"),
+            Map.entry("apple", "quả táo"),
+            Map.entry("phone", "điện thoại"),
+            Map.entry("book", "sách")
     );
 
     //viết API lấy dữ liệu để tra từ điển

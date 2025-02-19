@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CaculatorController {
     @GetMapping("/caculator")
     public ResponseEntity<String> caculator(
-            @RequestParam(defaultValue = " ") String firstNummber,
+            @RequestParam(defaultValue = "") String firstNummber,
             @RequestParam(defaultValue = "") String secondNumber,
-            @RequestParam(defaultValue = "") String operator)
-    {
+            @RequestParam(defaultValue = "") String operator) {
         //kiểm tra yêu cầu nhập đầy đủ
         if (firstNummber.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("First number cannot be empty");
@@ -32,17 +31,23 @@ public class CaculatorController {
 
         //xem trường hợp nhập vào operater
         switch (operator) {
-            case "+" : result = firstNum + secondNum; break;
-            case "-" : result = firstNum - secondNum; break;
-            case "*" : result = firstNum * secondNum; break;
-            case "/" : {
+            case "+":
+                result = firstNum + secondNum;
+                break;
+            case "-":
+                result = firstNum - secondNum;
+                break;
+            case "*":
+                result = firstNum * secondNum;
+                break;
+            case "/": {
                 if (secondNum == 0) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Division by zero");
                 }
                 result = firstNum / secondNum;
                 break;
             }
-            default : {
+            default: {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Valid operator");
             }
         }
