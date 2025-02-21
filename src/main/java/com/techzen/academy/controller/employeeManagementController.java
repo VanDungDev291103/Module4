@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/employee")
@@ -23,49 +27,86 @@ public class employeeManagementController {
             )
     );
 
-//    @GetMapping
+    @GetMapping
+    public ResponseEntity<List<Employee>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(employees);
+    }
+    // cách ngắn gọn
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getById(@PathVariable("id") Integer id) {
+        return employees.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    // Cách dài dòng
+//    @GetMapping("{id}")
+//    public ResponseEntity<Employee> getById(@PathVariable("id") int id) {
+//        // Chuyển danh sách employees thành Stream
+//        Stream<Employee> employeeStream = employees.stream();
+//
+//        // Lọc danh sách nhân viên theo ID
+//        Predicate<Employee> filterById = new Predicate<Employee>() {
+//            @Override
+//            public boolean test(Employee e) {
+//                return e.getId() == id;
+//            }
+//        };
+//        Stream<Employee> filteredStream = employeeStream.filter(filterById);
+//
+//        // Lấy phần tử đầu tiên tìm thấy
+//        Optional<Employee> optionalEmployee = filteredStream.findFirst();
+//
+//        // Chuyển đổi Optional<Employee> thành ResponseEntity
+//        Function<Employee, ResponseEntity<Employee>> toResponseEntity = new Function<Employee, ResponseEntity<Employee>>() {
+//            @Override
+//            public ResponseEntity<Employee> apply(Employee e) {
+//                return ResponseEntity.ok(e);
+//            }
+//        };
+//
+//        Optional<ResponseEntity<Employee>> optionalResponseEntity = optionalEmployee.map(toResponseEntity);
+//
+//        // Trả về giá trị nếu có, nếu không thì trả về 404
+//        if (optionalResponseEntity.isPresent()) {
+//            return optionalResponseEntity.get();
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
-    /// /    public ResponseEntity<List<Employee>> getAll() {
-    /// /        return ResponseEntity.status(HttpStatus.OK).body(employees);
-    /// /    }
-    /// /
-    /// /    @GetMapping("{id}")
-    /// /    public ResponseEntity<Employee> getById(@RequestParam("id") int id) {
-    /// /        return employees.stream().filter(e -> e.getId() == id).findFirst()
-    /// /                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    /// /    }
-    /// /
-    /// /    @PostMapping
-    /// /    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-    /// /        employee.setId((int) (Math.random()*10));
-    /// /        employees.add(employee);
-    /// /        return ResponseEntity.status(HttpStatus.CREATED).body(employee);
-    /// /    }
-    /// /
-    /// /
-    /// /    @PutMapping("/{id}")
-    /// /    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") int id, @RequestBody Employee employee) {
-    /// /        return employees.stream().filter(e -> e.getId() == id).findFirst()
-    /// /                .map(e -> {
-    /// /                    e.setName(employee.getName());
-    /// /                    e.setGender(employee.getGender());
-    /// /                    e.setSalary(employee.getSalary());
-    /// /                    e.setPhone(employee.getPhone()); // Sửa đổi này để cập nhật thuộc tính phone
-    /// /                    return ResponseEntity.ok(e);
-    /// /                })
-    /// /                .orElseGet(() -> ResponseEntity.notFound().build());
-    /// /    }
-    public ResponseEntity<ApiResponse<?>> getAll() {
-        return ResponseEntity.ok().body(ApiResponse.builder().data(employees).build());
+    @PostMapping
+    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
+        employee.setId((int) (Math.random()*10));
+        employees.add(employee);
+        return ResponseEntity.status(HttpStatus.CREATED).body(employee);
     }
 
-//        @GetMapping("{id}")
-//        public ResponseEntity<ApiResponse<Employee>> getById(@RequestParam("id") int id) {
-//            for (Employee e : employees) {
-//                if (e.getId() == id) {
-//
-//                }
-//            }
-//            return
-//        }
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> update(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        return employees.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .map(e -> {
+                    e.setName(employee.getName());
+                    e.setGender(employee.getGender());
+                    e.setSalary(employee.getSalary());
+                    e.setPhone(employee.getPhone());
+                    return ResponseEntity.ok(e);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
+        return employees.stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .map(e -> {
+                    employees.remove(e);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

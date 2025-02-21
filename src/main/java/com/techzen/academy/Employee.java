@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Employee {
-     int id;
+     Integer id;
      String name;
      Gender gender;
      double salary;
