@@ -1,7 +1,6 @@
 package com.techzen.academy.controller;
 
-import com.techzen.academy.Employee;
-import com.techzen.academy.dto.ApiResponse;
+import com.techzen.academy.model.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,14 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/employee")
-public class employeeManagementController {
+@RequestMapping("/employees")
+public class EmployeeManagementController {
     private List<Employee> employees = new ArrayList<>(
             Arrays.asList(
                     new Employee(1, "dũng", Employee.Gender.MALE, 180000, "0387161032"),
@@ -31,6 +26,7 @@ public class employeeManagementController {
     public ResponseEntity<List<Employee>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(employees);
     }
+
     // cách ngắn gọn
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getById(@PathVariable("id") Integer id) {
@@ -78,7 +74,7 @@ public class employeeManagementController {
 
     @PostMapping
     public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-        employee.setId((int) (Math.random()*10));
+        employee.setId((int) (Math.random() * 10));
         employees.add(employee);
         return ResponseEntity.status(HttpStatus.CREATED).body(employee);
     }
