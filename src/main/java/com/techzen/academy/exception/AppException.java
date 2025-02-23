@@ -7,11 +7,11 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ApiException extends RuntimeException {
+public class AppException extends RuntimeException {
   ErrorCode errorCode;
 
 
-  public ApiException(ErrorCode errorCode) {
+  public AppException(ErrorCode errorCode) {
     super(errorCode.getMessage());
     this.errorCode = errorCode;
   }

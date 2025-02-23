@@ -2,7 +2,7 @@ package com.techzen.academy.controller;
 
 import com.techzen.academy.model.Student;
 import com.techzen.academy.dto.ApiResponse;
-import com.techzen.academy.exception.ApiException;
+import com.techzen.academy.exception.AppException;
 import com.techzen.academy.exception.ErrorCode;
 import com.techzen.academy.service.IStudentService;
 import lombok.AccessLevel;
@@ -51,7 +51,7 @@ public class StudentController {
         //hoặc theo kiểu này return ResponseEntity.ok(ApiResponse.<Student>builder().data(students).build());
         Student student = studentService.findById(id);
         if (student == null) {
-            throw new ApiException(ErrorCode.STUDENT_NOT_EXIST);
+            throw new AppException(ErrorCode.STUDENT_NOT_EXIST);
         }
 
         return ResponseEntity.ok(ApiResponse.<Student>builder().data(student).build());

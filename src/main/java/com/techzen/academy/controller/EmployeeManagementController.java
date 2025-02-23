@@ -1,5 +1,7 @@
 package com.techzen.academy.controller;
 
+import com.techzen.academy.exception.AppException;
+import com.techzen.academy.exception.ErrorCode;
 import com.techzen.academy.model.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,7 @@ public class EmployeeManagementController {
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
     }
     // Cách dài dòng
 //    @GetMapping("{id}")
@@ -89,9 +91,8 @@ public class EmployeeManagementController {
                     e.setGender(employee.getGender());
                     e.setSalary(employee.getSalary());
                     e.setPhone(employee.getPhone());
-                    return ResponseEntity.ok(e);
-                })
-                .orElse(ResponseEntity.notFound().build());
+                    return ResponseEntity.ok(e);})
+                .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
     }
 
     @DeleteMapping("/{id}")
@@ -101,8 +102,8 @@ public class EmployeeManagementController {
                 .findFirst()
                 .map(e -> {
                     employees.remove(e);
-                    return ResponseEntity.ok().build();
+                    return ResponseEntity.noContent().build();
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
     }
 }
