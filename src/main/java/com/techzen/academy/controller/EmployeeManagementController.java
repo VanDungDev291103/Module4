@@ -1,41 +1,39 @@
 package com.techzen.academy.controller;
 
+import com.techzen.academy.dto.ApiResponse;
+import com.techzen.academy.dto.employee.EmployeeSearchRequest;
 import com.techzen.academy.exception.AppException;
 import com.techzen.academy.exception.ErrorCode;
 import com.techzen.academy.model.Employee;
-import org.springframework.http.HttpStatus;
+import com.techzen.academy.service.impl.EmployeeService;
+import com.techzen.academy.util.JsonResponse;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+@Controller
 @RestController
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/employees")
 public class EmployeeManagementController {
-    private List<Employee> employees = new ArrayList<>(
-            Arrays.asList(
-                    new Employee(1, "dũng", Employee.Gender.MALE, 180000, "0387161032",1),
-                    new Employee(2, "LY", Employee.Gender.FEMALE, 200000, "0987777777",2),
-                    new Employee(3, "Hai", Employee.Gender.MALE, 30000, "03873333333",3),
-                    new Employee(4, "Ân", Employee.Gender.FEMALE, 180000, "0387161111",2),
-                    new Employee(5, "Dorran", Employee.Gender.MALE, 5000000, "0387555555",3)
-            )
-    );
+
+    EmployeeService employeeService;
+
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(employees);
+    public ResponseEntity<?> getAll(EmployeeSearchRequest employeeSearchRequest) {
+        return JsonResponse.ok(employeeService.findByAttributes(employeeSearchRequest));
     }
 
     // cách ngắn gọn
     @GetMapping("/{id}")
     public ResponseEntity<Employee> getById(@PathVariable("id") Integer id) {
-        return employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
-                .map(ResponseEntity::ok)
+        return employeeService.findById(id).map(ResponseEntity::ok)
                 .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
     }
     // Cách dài dòng
@@ -75,35 +73,21 @@ public class EmployeeManagementController {
 //    }
 
     @PostMapping
-    public ResponseEntity<Employee> create(@RequestBody Employee employee) {
-        employee.setId((int) (Math.random() * 10));
-        employees.add(employee);
-        return ResponseEntity.status(HttpStatus.CREATED).body(employee);
+    public ResponseEntity<ApiResponse<Employee>> create(@RequestBody Employee employee) {
+        return JsonResponse.created(employeeService.save(employee));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> update(@PathVariable("id") Integer id, @RequestBody Employee employee) {
-        return employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
-                .map(e -> {
-                    e.setName(employee.getName());
-                    e.setGender(employee.getGender());
-                    e.setSalary(employee.getSalary());
-                    e.setPhone(employee.getPhone());
-                    return ResponseEntity.ok(e);})
-                .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
+    public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        employeeService.findById(id).orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
+        employee.setId(id);
+        return JsonResponse.ok(employeeService.save(employee));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
-        return employees.stream()
-                .filter(e -> e.getId().equals(id))
-                .findFirst()
-                .map(e -> {
-                    employees.remove(e);
-                    return ResponseEntity.noContent().build();
-                })
-                .orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
+        employeeService.findById(id).orElseThrow(() -> new AppException(ErrorCode.EMPLOYEE_NOT_EXIST));
+        employeeService.delete(id);
+        return JsonResponse.noContent();
     }
 }

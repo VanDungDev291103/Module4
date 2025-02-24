@@ -1,6 +1,6 @@
-package com.techzen.academy.dto;
+package com.techzen.academy.util;
 
-import com.techzen.academy.model.Department;
+import com.techzen.academy.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,5 +17,4 @@ public class JsonResponse {
     public static ResponseEntity<Void> noContent() {
         return ResponseEntity.noContent().build();
     }
-
 }
