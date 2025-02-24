@@ -15,7 +15,8 @@ public enum ErrorCode{
 
     STUDENT_NOT_EXIST(40401,"Student is not exist",HttpStatus.NOT_FOUND),
     TEACHER_NOT_EXIST(40402,"TEACHER is not exist",HttpStatus.NOT_FOUND),
-    EMPLOYEE_NOT_EXIST(40403,"EMPLOYEE is not exist",HttpStatus.NOT_FOUND);
+    EMPLOYEE_NOT_EXIST(40403,"Employee is not exist",HttpStatus.NOT_FOUND),
+    DEPARTMENT_NOT_EXIST(40404,"Department is not exist",HttpStatus.NOT_FOUND);
 
     int code;
     String message;

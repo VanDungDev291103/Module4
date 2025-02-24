@@ -16,11 +16,11 @@ import java.util.List;
 public class EmployeeManagementController {
     private List<Employee> employees = new ArrayList<>(
             Arrays.asList(
-                    new Employee(1, "dũng", Employee.Gender.MALE, 180000, "0387161032"),
-                    new Employee(2, "LY", Employee.Gender.FEMALE, 200000, "0987777777"),
-                    new Employee(3, "Hai", Employee.Gender.MALE, 30000, "03873333333"),
-                    new Employee(4, "Ân", Employee.Gender.FEMALE, 180000, "0387161111"),
-                    new Employee(5, "Dorran", Employee.Gender.MALE, 5000000, "0387555555")
+                    new Employee(1, "dũng", Employee.Gender.MALE, 180000, "0387161032",1),
+                    new Employee(2, "LY", Employee.Gender.FEMALE, 200000, "0987777777",2),
+                    new Employee(3, "Hai", Employee.Gender.MALE, 30000, "03873333333",3),
+                    new Employee(4, "Ân", Employee.Gender.FEMALE, 180000, "0387161111",2),
+                    new Employee(5, "Dorran", Employee.Gender.MALE, 5000000, "0387555555",3)
             )
     );
 

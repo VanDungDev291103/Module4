@@ -36,6 +36,10 @@ public class StudentController {
 //        this.studentService = studentService;
 //    } // sử dụng @AllArgsConstructor
 
+
+
+
+
     //@RequestMapping(value = "/Students", method = RequestMethod.GET)
     @GetMapping
     public ResponseEntity<?> getStudents(@RequestParam(defaultValue = "") String name) {
@@ -43,6 +47,12 @@ public class StudentController {
         //return ResponseEntity.status(HttpStatus.OK).body(studentSearch);hoặc
         return  ResponseEntity.ok(ApiResponse.builder().data(studentService.findByName(name)).build());
     }
+
+
+
+
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Student>> getById(@PathVariable("id") int id) {
@@ -57,6 +67,9 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.<Student>builder().data(student).build());
     }
 
+
+
+
     //@RequestMapping(value = "/Students", method = RequestMethod.POST)
     @PostMapping
     public ResponseEntity<ApiResponse<Student>> save(@RequestBody Student students) {
@@ -64,6 +77,9 @@ public class StudentController {
         //return ResponseEntity.status(201).body(students); HƠI THÔ NÊN SÀI CACHS DƯỚI
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<Student>builder().data(studentService.save(students)).build());
     }
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Student>> update(@PathVariable("id") int id, @RequestBody Student student) {

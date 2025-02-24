@@ -14,6 +14,7 @@ public class Employee {
      Gender gender;
      double salary;
      String phone;
+     Integer departmentId;
 
 //    public Employee() {
 //    }
