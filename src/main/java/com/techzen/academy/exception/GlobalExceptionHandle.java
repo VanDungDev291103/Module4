@@ -11,7 +11,7 @@ public class GlobalExceptionHandle {
     public ResponseEntity<?> handleException(Exception e) {
         //ErrorCode errorCode = e.getErrorCode();
 
-        return  ResponseEntity.status(ErrorCode.STUDENT_NOT_EXIST.getStatusCode()).body(ApiResponse.builder()
+        return ResponseEntity.status(ErrorCode.STUDENT_NOT_EXIST.getStatusCode()).body(ApiResponse.builder()
                 .code(ErrorCode.STUDENT_NOT_EXIST.getCode())
                 .message(ErrorCode.STUDENT_NOT_EXIST.getMessage())
                 .build());

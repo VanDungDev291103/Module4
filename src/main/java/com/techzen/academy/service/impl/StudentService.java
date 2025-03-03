@@ -15,14 +15,14 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class StudentService implements IStudentService {
     //@Autowired //DI => tiêm sự phụ thuộc
-     IStudentRepository studentRepository;
+    IStudentRepository studentRepository;
 
     public List<Student> findByName(String name) {
         return studentRepository.findByName(name);
     }
 
     public Student findById(int id) {
-       return studentRepository.findById(id);
+        return studentRepository.findById(id);
     }
 
     public Student save(Student student) {

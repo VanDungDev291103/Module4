@@ -9,12 +9,12 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Employee {
-     Integer id;
-     String name;
-     Gender gender;
-     double salary;
-     String phone;
-     Integer departmentId;
+    Integer id;
+    String name;
+    Gender gender;
+    double salary;
+    String phone;
+    Integer departmentId;
 
 //    public Employee() {
 //    }
@@ -68,6 +68,6 @@ public class Employee {
 //    }
 
     public enum Gender {
-        MALE, FEMALE,OTHER
+        MALE, FEMALE, OTHER
     }
 }

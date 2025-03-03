@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface IEmployeeRepository {
     List<Employee>  findByAttributes(EmployeeSearchRequest employeeSearchRequest);
-    Optional<Employee> findById(Integer id);
+    Optional<Employee> findById(Integer id); // sử dụng Optional để tránh NullPointerException
+
     Employee save(Employee employee);
+
     void delete(Integer id);
 }

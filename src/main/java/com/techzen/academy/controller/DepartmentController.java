@@ -6,7 +6,10 @@ import com.techzen.academy.util.JsonResponse;
 import com.techzen.academy.exception.AppException;
 import com.techzen.academy.exception.ErrorCode;
 import com.techzen.academy.model.Department;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,7 @@ import java.util.List;
 @Controller
 @RestController
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/departments")
 public class DepartmentController {
 
@@ -24,7 +28,11 @@ public class DepartmentController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(ApiResponse.builder().data(departmentService.findAll()).build());
+        List<Department> departments = departmentService.findAll();
+        if (departments == null || departments.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(departments);
     }
 
     @GetMapping("/{id}")

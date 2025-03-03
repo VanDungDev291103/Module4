@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface IDepartmentRepository {
     List<Department> findAll();
+
     Optional<Department> findById(Integer id);
+
     Department save(Department department);
+
     void delete(Integer id);
 }
